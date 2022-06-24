@@ -2,7 +2,7 @@
 
 How to create a custom authentication extension for Zimbra
 
-In this article you will learn how to implement Custom Authentication using a Zimbra extension. The Java project and source code can be found at https://github.com/Zimbra/zm-custom-auth-guide.
+In this article you will learn how to implement Custom Authentication using a Zimbra extension. The Java project and source code can be found at https://github.com/Zimbra/zimbra-custom-authentication.
 
 Take a look at https://github.com/Zimbra/zm-extension-guide if you are new to Java or building Zimbra extensions. The zm-extension-guide covers all the things needed to build the Custom Authentication extension.
 
