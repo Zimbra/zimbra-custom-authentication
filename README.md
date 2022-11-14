@@ -130,11 +130,26 @@ The context parameter holds meta data from the request that you can use to refin
 |---|---|
 | ocip | IP address from the Originating IP header |
 | ua | User Agent of the client |
-| proto | Protocol being logged into (http_basic, http_dav, im, imap, pop3, soap, spnego, zsync) |
+| proto | Protocol being logged into (http_basic, http_dav, im, imap, pop3, soap, spnego, zsync) please note that SMTP is not in this list, see below. |
+| soapport | when proto is soap, soapport will be 7073 for SMTP connections and 8080 or similar for WebUI authentication, see below (since Zimbra 9 patch 29) |
 
 For the originating IP to work, the Zimbra server needs to be configured correctly see https://wiki.zimbra.com/wiki/Secopstips#Log_the_correct_origination_IP for more information.
 
 The extension needs to be build as a jar and then configured as below.
+
+## Differentiating SMTP and WebUI authentication
+
+Since Zimbra uses SOAP internally to authenticate SMTP connections, you will need to use both proto and soapport from Authentication Context (context) to tell the difference between them. When the proto equals to soap and soapport equals to 7073 the authentication for an SMTP connection is being done. For WebUI authentication the protocol is also soap and defaults to port 8080, although this can be a different port.
+
+Here is a code snippet for determining SMTP authentication.
+```
+if (context.get("soapport") != null) {
+   if (!context.get("soapport").equals(account.getServer().getMtaAuthPort())) {
+      //This is an SMTP authentication attempt
+   }
+}   
+```
+In a real world scenario this can be used to for supporting passtokens on SMTP and 2FA on the WebUI.
 
 ## Configuring custom authentication on Zimbra
 
